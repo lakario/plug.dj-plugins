@@ -2,6 +2,8 @@
 // @name           plug.dj: DJ Leave Alert
 // @include        *.plug.dj/*/*
 // ==/UserScript==
+var gitPath = 'https://raw.github.com/lakario/plug.dj-plugins/master/';
+
 if(window.navigator.vendor.match(/Google/)) { //yet another chrome-specific code..
     var div = document.createElement("div");
     div.setAttribute("onclick", "return window;");
@@ -13,16 +15,14 @@ unsafeWindow.DJLeaveAlert = function(users) {
     if(len < 5) {
         console.log('[Leave Alert] DJ slot open.');
         
-        var soundElement = document.getElementById('chat-sound');
-        var roomWheel = unsafeWindow.$('#room-wheel');
-        soundElement.playChatSound();
+		document.getElementById('loud-beep').play();
         
-        var count = 1;
+		var roomWheel = unsafeWindow.$('#room-wheel');
+        var count = 0;
         var soundInt = setInterval(function() { 
-            soundElement.playChatSound();
             roomWheel.hide('fast');
             roomWheel.show('fast');
-            if(++count == 5) {
+            if(++count == 10) {
                 clearInterval(soundInt);
             }
         }, 500); 
@@ -57,7 +57,10 @@ if (state == null){
 else{
 	state = parseInt(state);
 }
+
 initArray = ['OFF', 'ON'];
 toggleDJLeaveAlert();
+
 unsafeWindow.$('#user-container').append('<div class="leave-alert-wrp" style="position:absolute;bottom:-20px;right:0;"></div>');
 unsafeWindow.$('.leave-alert-wrp').append('<a href="#" id="toggleDJLeaveAlert" style="font-weight:bold;color:red">DJ Leave Alert: <span id="djla-state">' + initArray[state] + '</span></a>').click(toggleDJLeaveAlert);
+unsafeWindow.$('.leave-alert-wrp').append('<audio id="loud-beep"><source src="' + gitPath + 'assets/loudbeep.wav" type="audio/wav"><source src="' + gitPath + 'assets/loudbeep.mp3" type="audio/mp3"></audio');
