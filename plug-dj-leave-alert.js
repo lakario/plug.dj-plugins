@@ -22,7 +22,7 @@ unsafeWindow.DJLeaveAlert = function(users) {
         var soundInt = setInterval(function() { 
             roomWheel.hide('fast');
             roomWheel.show('fast');
-            if(++count == 10) {
+            if(++count == 5) {
                 clearInterval(soundInt);
             }
         }, 500); 
