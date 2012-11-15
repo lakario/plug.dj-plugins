@@ -9,28 +9,39 @@ if(window.navigator.vendor.match(/Google/)) { //yet another chrome-specific code
     div.setAttribute("onclick", "return window;");
     unsafeWindow = div.onclick();
 };
+
 unsafeWindow.DJLeaveAlert = function(users) {
     var len = users.length;
     
     if(len < 5) {
         console.log('[Leave Alert] DJ slot open.');
-        
 		document.getElementById('loud-beep').play();
-        
-		var roomWheel = unsafeWindow.$('#room-wheel');
-        var count = 0;
-        var soundInt = setInterval(function() { 
-            roomWheel.hide('fast');
-            roomWheel.show('fast');
-            if(++count == 5) {
-                clearInterval(soundInt);
-            }
-        }, 500); 
+		unsafeWindow.flashBg(5);
     }
     else {
         console.log('[Leave Alert] All slots taken.');
     }
 };
+
+unsafeWindow.flashBg = function(flashCount) {
+	flashCount = flashCount || 5;
+    var count = 0;
+	
+    var blinkInt = setInterval(function() {
+        var body = unsafeWindow.$('body');
+        var bg = body.css('background');
+        
+        body.css('background', 'none');
+        setTimeout(function() {
+            body.css('background', bg);
+        }, 250);
+        
+        if(++count == flashCount) {
+            clearInterval(blinkInt);
+        }
+    }, 500);    
+}
+
 function toggleDJLeaveAlert(ev) {
     if(ev && ev.preventDefault) {
         ev.preventDefault();
@@ -49,7 +60,9 @@ function toggleDJLeaveAlert(ev) {
     state = (state + 1) % 2;
     return false;
 }
+
 state = localStorage.getItem('DJLeaveAlertFlag');
+
 if (state == null){
     state = 0;
     localStorage.setItem('DJLeaveAlertFlag', '0');
