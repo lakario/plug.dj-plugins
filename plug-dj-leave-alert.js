@@ -4,7 +4,7 @@
 // ==/UserScript==
 var gitPath = 'https://raw.github.com/lakario/plug.dj-plugins/master/';
 
-if(window.navigator.vendor.match(/Google/)) { //yet another chrome-specific code..
+if(window.navigator.vendor.match(/Google/)) {
     var div = document.createElement("div");
     div.setAttribute("onclick", "return window;");
     unsafeWindow = div.onclick();
@@ -68,12 +68,16 @@ if (state == null){
     localStorage.setItem('DJLeaveAlertFlag', '0');
 }
 else{
-	state = parseInt(state);
+    state = parseInt(state);
 }
 
 initArray = ['OFF', 'ON'];
 toggleDJLeaveAlert();
 
-unsafeWindow.$('#user-container').append('<div class="leave-alert-wrp" style="position:absolute;bottom:-20px;right:0;"></div>');
-unsafeWindow.$('.leave-alert-wrp').append('<a href="#" id="toggleDJLeaveAlert" style="font-weight:bold;color:red">DJ Leave Alert: <span id="djla-state">' + initArray[state] + '</span></a>').click(toggleDJLeaveAlert);
-unsafeWindow.$('.leave-alert-wrp').append('<audio id="loud-beep"><source src="' + gitPath + 'assets/loudbeep.wav" type="audio/wav"><source src="' + gitPath + 'assets/loudbeep.mp3" type="audio/mp3"></audio');
+unsafeWindow.$('#user-container')
+	.append('<div class="leave-alert-wrp" style="position:absolute;bottom:-20px;right:0;"></div>');
+unsafeWindow.$('.leave-alert-wrp')
+	.append('<a href="#" id="toggleDJLeaveAlert" style="font-weight:bold;color:red">DJ Leave Alert: <span id="djla-state">' + initArray[state] + '</span></a>')
+	.click(toggleDJLeaveAlert);
+unsafeWindow.$('.leave-alert-wrp')
+	.append('<audio id="loud-beep"><source src="' + gitPath + 'assets/loudbeep.wav" type="audio/wav"><source src="' + gitPath + 'assets/loudbeep.mp3" type="audio/mp3"></audio');
