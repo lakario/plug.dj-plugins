@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name           plug.dj: DJ Leave Alert
-// @include        *.plug.dj/*/*
+// @include        *plug.dj/*/*
 // ==/UserScript==
 var gitPath = 'https://raw.github.com/lakario/plug.dj-plugins/master/';
 
@@ -24,7 +24,7 @@ unsafeWindow.DJLeaveAlert = function(users) {
 };
 
 unsafeWindow.flashBg = function(flashCount) {
-	flashCount = flashCount || 5;
+    flashCount = flashCount || 5;
     var count = 0;
 	
     var blinkInt = setInterval(function() {
