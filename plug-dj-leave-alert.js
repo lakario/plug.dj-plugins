@@ -4,6 +4,8 @@
 // ==/UserScript==
 var gitPath = 'https://raw.github.com/lakario/plug.dj-plugins/master/';
 
+unsafeWindow = window;
+
 if(window.navigator.vendor.match(/Google/)) {
     var div = document.createElement("div");
     div.setAttribute("onclick", "return window;");
