@@ -1,11 +1,14 @@
 // ==UserScript==
 // @name           plug.dj: DJ Leave Alert
 // @include        *plug.dj/*/*
-// @version        0.5
+// @version        0.5.1
+// @grant          none
 // ==/UserScript==
 
 var fireLazers=function() {
 	var gitPath = 'https://raw.github.com/lakario/plug.dj-plugins/master/';
+	var state = localStorage.getItem('DJLeaveAlertFlag');
+	var initArray = ['OFF', 'ON'];
 
 	unsafeWindow = window;
 
@@ -14,6 +17,10 @@ var fireLazers=function() {
 		div.setAttribute("onclick", "return window;");
 		unsafeWindow = div.onclick();
 	};
+	
+	if(!unsafeWindow.$) {
+		return;
+	}
 
 	unsafeWindow.DJLeaveAlert = function(users) {
 		var len = users.length;
@@ -51,23 +58,34 @@ var fireLazers=function() {
 		if(ev && ev.preventDefault) {
 			ev.preventDefault();
 		}
+
 		if (state){
 			console.log('Turning DJ Leave Alert off');
-			unsafeWindow.API.removeEventListener(unsafeWindow.API.DJ_UPDATE, unsafeWindow.DJLeaveAlert);
-			unsafeWindow.$('#djla-state').html('OFF');
+			
+			try {
+				unsafeWindow.API.removeEventListener(unsafeWindow.API.DJ_UPDATE, unsafeWindow.DJLeaveAlert);
+			}
+			catch (e) {}
+			
+			unsafeWindow.$('#djla-state').text('OFF').parent().css('color', 'white');
 		}
 		else {
 			console.log('Turning DJ Leave Alert on');
-			unsafeWindow.API.addEventListener(unsafeWindow.API.DJ_UPDATE, unsafeWindow.DJLeaveAlert);
-			unsafeWindow.$('#djla-state').html('ON');
+			
+			try {
+				unsafeWindow.API.addEventListener(unsafeWindow.API.DJ_UPDATE, unsafeWindow.DJLeaveAlert);	
+			}
+			catch (e) {}
+			
+			unsafeWindow.$('#djla-state').text('ON').parent().css('color', 'red');
 		}
+
 		localStorage.setItem('DJLeaveAlertFlag', state);
 		state = (state + 1) % 2;
+		
 		return false;
 	}
-
-	state = localStorage.getItem('DJLeaveAlertFlag');
-
+	
 	if (state == null){
 		state = 0;
 		localStorage.setItem('DJLeaveAlertFlag', '0');
@@ -76,14 +94,18 @@ var fireLazers=function() {
 		state = parseInt(state);
 	}
 
-	initArray = ['OFF', 'ON'];
-	toggleDJLeaveAlert();
-
 	unsafeWindow.$('#user-container')
-		.append('<div class="leave-alert-wrp" style="position:absolute;bottom:-20px;right:0;"></div>');
+		.append('<div class="leave-alert-wrp" style="position:absolute;bottom:-18px;right:0;"></div>');
 	unsafeWindow.$('.leave-alert-wrp')
-		.append('<a href="#" id="toggleDJLeaveAlert" style="font-weight:bold;color:red">DJ Leave Alert: <span id="djla-state">' + initArray[state] + '</span></a>')
+		.append('<a href="#" id="toggleDJLeaveAlert" style="font-size:11px;font-weight:bold;display:none;">DJ Leave Alert: <span id="djla-state">' + initArray[state] + '</span></a>')
 		.click(toggleDJLeaveAlert);
 	unsafeWindow.$('.leave-alert-wrp')
 		.append('<audio id="loud-beep"><source src="' + gitPath + 'assets/loudbeep.wav" type="audio/wav"><source src="' + gitPath + 'assets/loudbeep.mp3" type="audio/mp3"></audio');
-};fireLazers();
+		
+	toggleDJLeaveAlert();
+	
+	unsafeWindow.$('#toggleDJLeaveAlert').show();
+};
+setTimeout(function() { 
+	fireLazers();
+}, 2000);
