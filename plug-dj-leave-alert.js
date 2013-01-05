@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           plug.dj: DJ Leave Alert
 // @include        *plug.dj/*/*
-// @version        0.5.1
+// @version        0.5.2
 // @grant          none
 // ==/UserScript==
 
