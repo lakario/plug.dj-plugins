@@ -1,0 +1,44 @@
+var avatarStrobe = {
+	on: true
+	, speed: 500
+	, interval: null
+	, url: 'http://plug.dj/_/gateway/user.set_avatar'
+	, avatars: []
+	, stop: function() {
+		clearInterval(avatarStrobe.interval);
+	}
+	, start: function(speed) {
+		avatarStrobe.stop();
+		avatars = [];
+		
+		$('#avatar-panel img').each(function() { 
+			var src = $(this).attr('src');
+			var srcParts = src.split('/');
+			var fileName = srcParts[srcParts.length-1];
+			var nameParts = fileName.split('.');
+			var avatarName = nameParts[0];
+			
+			avatarStrobe.avatars.push(avatarName); 
+		});
+
+		avatarStrobe.interval = setInterval(function() {
+			if(!avatarStrobe.on) return;
+			
+			if(avatarStrobe.avatars.length == 0) {
+				console.log('unable to load avatars. stopping.');
+				avatarStrobe.stop();
+			}
+			
+			var index = Math.floor(Math.random() * avatarStrobe.avatars.length - 1);
+			var avatar = avatarStrobe.avatars[index];
+
+			$.ajax({ 
+				url: avatarStrobe.url,
+				type: 'post', 
+				contentType: 'application/json', 
+				data: JSON.stringify({ service: 'user.set_avatar', body: [avatar] })
+			});
+		}, speed || avatarStrobe.speed);
+	}
+};
+avatarStrobe.start();
