@@ -2,14 +2,16 @@ var avatarStrobe = {
 	on: true
 	, speed: 500
 	, interval: null
-	, url: 'http://plug.dj/_/gateway/user.set_avatar'
 	, avatars: []
 	, stop: function() {
 		clearInterval(avatarStrobe.interval);
 	}
 	, start: function(speed) {
 		avatarStrobe.stop();
-		avatars = [];
+
+		for(var i = 1; i <= 13; i++) {
+			avatarStrobe.avatars.push('halloween' + (i < 10 ? '0' : '') + i);
+		}
 		
 		$('#avatar-panel img').each(function() { 
 			var src = $(this).attr('src');
@@ -32,12 +34,7 @@ var avatarStrobe = {
 			var index = Math.floor(Math.random() * avatarStrobe.avatars.length - 1);
 			var avatar = avatarStrobe.avatars[index];
 
-			$.ajax({ 
-				url: avatarStrobe.url,
-				type: 'post', 
-				contentType: 'application/json', 
-				data: JSON.stringify({ service: 'user.set_avatar', body: [avatar] })
-			});
+			Models.user.changeAvatar(avatar);
 		}, speed || avatarStrobe.speed);
 	}
 };
