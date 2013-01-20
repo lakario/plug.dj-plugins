@@ -10,7 +10,7 @@ var avatarStrobe = {
 		avatarStrobe.stop();
 
 		for(var i = 1; i <= 13; i++) {
-			avatarStrobe.avatars.push('halloween' + (i < 10 ? '0' : '') + i);
+			avatarStrobe.avatars.push('halloween' + (i <= 9 ? '0' : '') + i);
 		}
 		
 		$('#avatar-panel img').each(function() { 
@@ -31,10 +31,15 @@ var avatarStrobe = {
 				avatarStrobe.stop();
 			}
 			
-			var index = Math.floor(Math.random() * avatarStrobe.avatars.length - 1);
+			var index = Math.floor(Math.random() * avatarStrobe.avatars.length);
 			var avatar = avatarStrobe.avatars[index];
 
-			Models.user.changeAvatar(avatar);
+			if(avatar) {
+				Models.user.changeAvatar(avatar);
+			}
+			else {
+				console.log('derp! index=' + index)
+			}
 		}, speed || avatarStrobe.speed);
 	}
 };
