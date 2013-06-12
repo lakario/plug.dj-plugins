@@ -1,6 +1,6 @@
 var avatarStrobe = {
 	on: true
-	, speed: 500
+	, speed: 700
 	, interval: null
 	, avatars: []
 	, stop: function() {
@@ -9,7 +9,7 @@ var avatarStrobe = {
 	, start: function(speed) {
 		avatarStrobe.stop();
 
-		for(var i = 1; i <= 13; i++) {
+		for(var i = 1; i <= 12; i++) {
 			avatarStrobe.avatars.push('halloween' + (i <= 9 ? '0' : '') + i);
 		}
 		
